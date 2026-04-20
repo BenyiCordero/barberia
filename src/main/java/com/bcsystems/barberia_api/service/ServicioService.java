@@ -21,7 +21,7 @@ public class ServicioService {
 
     @Transactional(readOnly = true)
     public Page<ServicioDTO> findAll(Pageable pageable) {
-        return servicioRepository.findAll(pageable).map(this::toDTO);
+        return servicioRepository.findByStatus(1, pageable).map(this::toDTO);
     }
 
     @Transactional(readOnly = true)

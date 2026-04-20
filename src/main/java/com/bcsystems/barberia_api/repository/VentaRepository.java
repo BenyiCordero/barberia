@@ -23,4 +23,10 @@ public interface VentaRepository extends JpaRepository<Venta, Integer> {
     
     @Query("SELECT SUM(v.total) FROM Venta v WHERE v.fecha BETWEEN :start AND :end")
     Double sumTotalByFechaBetween(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+
+    @Query("SELECT SUM(vd.cantidad) FROM VentaDetalle vd WHERE vd.producto.idProducto = :idProducto AND vd.venta.fecha BETWEEN :start AND :end")
+    Integer sumCantidadByProductoAndFechaBetween(@Param("idProducto") Integer idProducto, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+
+    @Query("SELECT SUM(vd.precio * vd.cantidad) FROM VentaDetalle vd WHERE vd.producto.idProducto = :idProducto AND vd.venta.fecha BETWEEN :start AND :end")
+    Double sumTotalByProductoAndFechaBetween(@Param("idProducto") Integer idProducto, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 }

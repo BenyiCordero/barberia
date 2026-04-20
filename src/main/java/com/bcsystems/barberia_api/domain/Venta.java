@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -26,6 +27,6 @@ public class Venta {
     private LocalDateTime fecha = LocalDateTime.now();
     private Double total;
     @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<VentaDetalle> detalles;
+    private List<VentaDetalle> detalles = new ArrayList<>();
 
 }

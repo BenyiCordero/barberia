@@ -51,6 +51,7 @@ public class CitaService {
     @Transactional
     public CitaDTO save(CitaDTO dto) {
         Cita cita = toEntity(dto);
+        System.out.println("Detalles: " + dto.getDetalles());
         Cita saved = citaRepository.save(cita);
         return toDTO(saved);
     }
@@ -78,6 +79,21 @@ public class CitaService {
         }
         if (dto.getEstado() != null) {
             cita.setEstado(dto.getEstado());
+        }
+
+        if (dto.getDetalles() != null) {
+            cita.getDetalles().clear();
+            for (CitaDetailsDTO detailDTO : dto.getDetalles()) {
+                CitaDetails detail = new CitaDetails();
+                detail.setCita(cita);
+                if (detailDTO.getIdServicio() != null) {
+                    Servicio servicio = servicioRepository.findById(detailDTO.getIdServicio())
+                            .orElseThrow(() -> new RuntimeException("Servicio no encontrado"));
+                    detail.setServicio(servicio);
+                }
+                detail.setPrecio(detailDTO.getPrecio());
+                cita.getDetalles().add(detail);
+            }
         }
 
         return toDTO(citaRepository.save(cita));

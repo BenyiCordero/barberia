@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barbería - Sistema de Gestión</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <nav id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <i class="fas fa-cut"></i>
+            <span>Barbería</span>
+        </div>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a href="#" class="nav-link active" data-page="dashboard">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" data-page="clientes">
+                    <i class="fas fa-users"></i>
+                    <span>Clientes</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" data-page="empleados">
+                    <i class="fas fa-user-tie"></i>
+                    <span>Empleados</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" data-page="servicios">
+                    <i class="fas fa-scissors"></i>
+                    <span>Servicios</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" data-page="productos">
+                    <i class="fas fa-box"></i>
+                    <span>Productos</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" data-page="citas">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Citas</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" data-page="ventas">
+                    <i class="fas fa-cash-register"></i>
+                    <span>Ventas</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" data-page="inventario">
+                    <i class="fas fa-warehouse"></i>
+                    <span>Inventario</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="main-content">
+        <!-- Dashboard -->
+        <section id="page-dashboard" class="page active">
+            <div class="page-header">
+                <h1><i class="fas fa-chart-line"></i> Dashboard</h1>
+            </div>
+            <div class="page-content">
+                <!-- Tarjetas de métricas -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="metric-card metric-primary">
+                            <div class="metric-icon">
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                            <div class="metric-info">
+                                <h3 id="ventas-dia">$0.00</h3>
+                                <p>Ventas del Día</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="metric-card metric-success">
+                            <div class="metric-icon">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                            <div class="metric-info">
+                                <h3 id="citas-dia">0</h3>
+                                <p>Citas del Día</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="metric-card metric-warning">
+                            <div class="metric-icon">
+                                <i class="fas fa-chart-pie"></i>
+                            </div>
+                            <div class="metric-info">
+                                <h3 id="ventas-semana">$0.00</h3>
+                                <p>Ventas Semana</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="metric-card metric-info">
+                            <div class="metric-icon">
+                                <i class="fas fa-percentage"></i>
+                            </div>
+                            <div class="metric-info">
+                                <h3 id="ganancias-netas">$0.00</h3>
+                                <p>Ganancias Netas</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gráficos y tablas -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5><i class="fas fa-boxes-stacked"></i> Productos Más Vendidos</h5>
+                            </div>
+                            <div class="card-body">
+                                <div id="productos-mas-vendidos" class="table-responsive">
+                                    <p class="text-muted text-center">Cargando...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5><i class="fas fa-users"></i> Citas por Empleado</h5>
+                            </div>
+                            <div class="card-body">
+                                <div id="citas-empleado" class="table-responsive">
+                                    <p class="text-muted text-center">Cargando...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Clientes -->
+        <section id="page-clientes" class="page">
+            <div class="page-header">
+                <h1><i class="fas fa-users"></i> Clientes</h1>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-cliente">
+                    <i class="fas fa-plus"></i> Nuevo Cliente
+                </button>
+            </div>
+            <div class="page-content">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="tabla-clientes">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre</th>
+                                        <th>Teléfono</th>
+                                        <th>Fecha Registro</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="clientes-tbody"></tbody>
+                            </table>
+                        </div>
+                        <nav>
+                            <ul class="pagination justify-content-center" id="clientes-pagination"></ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Empleados -->
+        <section id="page-empleados" class="page">
+            <div class="page-header">
+                <h1><i class="fas fa-user-tie"></i> Empleados</h1>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-empleado">
+                    <i class="fas fa-plus"></i> Nuevo Empleado
+                </button>
+            </div>
+            <div class="page-content">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="tabla-empleados">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre</th>
+                                        <th>Teléfono</th>
+                                        <th>Comisión %</th>
+                                        <th>Status</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="empleados-tbody"></tbody>
+                            </table>
+                        </div>
+                        <nav>
+                            <ul class="pagination justify-content-center" id="empleados-pagination"></ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Servicios -->
+        <section id="page-servicios" class="page">
+            <div class="page-header">
+                <h1><i class="fas fa-scissors"></i> Servicios</h1>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-servicio">
+                    <i class="fas fa-plus"></i> Nuevo Servicio
+                </button>
+            </div>
+            <div class="page-content">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="tabla-servicios">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre</th>
+                                        <th>Descripción</th>
+                                        <th>Duración (min)</th>
+                                        <th>Precio</th>
+                                        <th>Status</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="servicios-tbody"></tbody>
+                            </table>
+                        </div>
+                        <nav>
+                            <ul class="pagination justify-content-center" id="servicios-pagination"></ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Productos -->
+        <section id="page-productos" class="page">
+            <div class="page-header">
+                <h1><i class="fas fa-box"></i> Productos</h1>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-producto">
+                    <i class="fas fa-plus"></i> Nuevo Producto
+                </button>
+            </div>
+            <div class="page-content">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="tabla-productos">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre</th>
+                                        <th>Descripción</th>
+                                        <th>Precio Compra</th>
+                                        <th>Precio Venta</th>
+                                        <th>Stock</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="productos-tbody"></tbody>
+                            </table>
+                        </div>
+                        <nav>
+                            <ul class="pagination justify-content-center" id="productos-pagination"></ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Citas -->
+        <section id="page-citas" class="page">
+            <div class="page-header">
+                <h1><i class="fas fa-calendar-alt"></i> Citas</h1>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-cita">
+                    <i class="fas fa-plus"></i> Nueva Cita
+                </button>
+            </div>
+            <div class="page-content">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="tabla-citas">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Cliente</th>
+                                        <th>Empleado</th>
+                                        <th>Fecha Inicio</th>
+                                        <th>Fecha Fin</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="citas-tbody"></tbody>
+                            </table>
+                        </div>
+                        <nav>
+                            <ul class="pagination justify-content-center" id="citas-pagination"></ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ventas -->
+        <section id="page-ventas" class="page">
+            <div class="page-header">
+                <h1><i class="fas fa-cash-register"></i> Ventas</h1>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-venta">
+                    <i class="fas fa-plus"></i> Nueva Venta
+                </button>
+            </div>
+            <div class="page-content">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="tabla-ventas">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Fecha</th>
+                                        <th>Total</th>
+                                        <th>Cita Asociada</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ventas-tbody"></tbody>
+                            </table>
+                        </div>
+                        <nav>
+                            <ul class="pagination justify-content-center" id="ventas-pagination"></ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Inventario -->
+        <section id="page-inventario" class="page">
+            <div class="page-header">
+                <h1><i class="fas fa-warehouse"></i> Inventario</h1>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-movimiento">
+                    <i class="fas fa-plus"></i> Nuevo Movimiento
+                </button>
+            </div>
+            <div class="page-content">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="tabla-inventario">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Producto</th>
+                                        <th>Descripción</th>
+                                        <th>Precio Venta</th>
+                                        <th>Stock</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="inventario-tbody"></tbody>
+                            </table>
+                        </div>
+                        <nav>
+                            <ul class="pagination justify-content-center" id="inventario-pagination"></ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal Genérico de Confirmación -->
+    <div class="modal fade" id="modal-confirmacion" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmacion-titulo">Confirmación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="confirmacion-mensaje"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="confirmacion-btn">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Cliente -->
+    <div class="modal fade" id="modal-cliente" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-cliente-titulo">Nuevo Cliente</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="form-cliente">
+                    <div class="modal-body">
+                        <input type="hidden" id="cliente-id">
+                        <div class="mb-3">
+                            <label class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="cliente-nombre" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Teléfono</label>
+                            <input type="text" class="form-control" id="cliente-telefono" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Empleado -->
+    <div class="modal fade" id="modal-empleado" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-empleado-titulo">Nuevo Empleado</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="form-empleado">
+                    <div class="modal-body">
+                        <input type="hidden" id="empleado-id">
+                        <div class="mb-3">
+                            <label class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="empleado-nombre" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Teléfono</label>
+                            <input type="text" class="form-control" id="empleado-telefono" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Porcentaje Comisión (%)</label>
+                            <input type="number" class="form-control" id="empleado-comision" step="0.01" min="0" max="100" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Servicio -->
+    <div class="modal fade" id="modal-servicio" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-servicio-titulo">Nuevo Servicio</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="form-servicio">
+                    <div class="modal-body">
+                        <input type="hidden" id="servicio-id">
+                        <div class="mb-3">
+                            <label class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="servicio-nombre" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Descripción</label>
+                            <textarea class="form-control" id="servicio-descripcion" rows="2"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Duración (minutos)</label>
+                            <input type="number" class="form-control" id="servicio-duracion" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Precio</label>
+                            <input type="number" class="form-control" id="servicio-precio" step="0.01" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Producto -->
+    <div class="modal fade" id="modal-producto" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-producto-titulo">Nuevo Producto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="form-producto">
+                    <div class="modal-body">
+                        <input type="hidden" id="producto-id">
+                        <div class="mb-3">
+                            <label class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="producto-nombre" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Descripción</label>
+                            <textarea class="form-control" id="producto-descripcion" rows="2"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Precio Compra</label>
+                            <input type="number" class="form-control" id="producto-precio-compra" step="0.01" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Precio Venta</label>
+                            <input type="number" class="form-control" id="producto-precio-venta" step="0.01" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Stock</label>
+                            <input type="number" class="form-control" id="producto-stock" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Cita -->
+    <div class="modal fade" id="modal-cita" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-cita-titulo">Nueva Cita</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="form-cita">
+                    <div class="modal-body">
+                        <input type="hidden" id="cita-id">
+                        <div class="mb-3">
+                            <label class="form-label">Cliente</label>
+                            <select class="form-select" id="cita-cliente" required></select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Empleado</label>
+                            <select class="form-select" id="cita-empleado" required></select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Fecha Inicio</label>
+                            <input type="datetime-local" class="form-control" id="cita-fecha-inicio" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Fecha Fin</label>
+                            <input type="datetime-local" class="form-control" id="cita-fecha-fin" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Estado</label>
+                            <select class="form-select" id="cita-estado">
+                                <option value="PENDIENTE">Pendiente</option>
+                                <option value="COMPLETADA">Completada</option>
+                                <option value="CANCELADA">Cancelada</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Servicios</label>
+                            <div id="cita-servicios-checkboxes"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Venta -->
+    <div class="modal fade" id="modal-venta" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-venta-titulo">Nueva Venta</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="form-venta">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Cita (opcional)</label>
+                            <select class="form-select" id="venta-cita">
+                                <option value="">Sin cita</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Agregar Items</label>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <select class="form-select mb-2" id="venta-tipo-item">
+                                        <option value="producto">Producto</option>
+                                        <option value="servicio">Servicio</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <select class="form-select mb-2" id="venta-item-select"></select>
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="number" class="form-control" id="venta-cantidad" value="1" min="1">
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-outline-primary btn-sm" id="btn-agregar-item">
+                                <i class="fas fa-plus"></i> Agregar
+                            </button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-sm" id="venta-items-tabla">
+                                <thead>
+                                    <tr>
+                                        <th>Tipo</th>
+                                        <th>Nombre</th>
+                                        <th>Cantidad</th>
+                                        <th>Precio</th>
+                                        <th>Subtotal</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="venta-items-tbody"></tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th colspan="4" class="text-end">Total:</th>
+                                        <th id="venta-total">$0.00</th>
+                                        <th></th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Movimiento Inventario -->
+    <div class="modal fade" id="modal-movimiento" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Nuevo Movimiento</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="form-movimiento">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Producto</label>
+                            <select class="form-select" id="movimiento-producto" required></select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Tipo de Movimiento</label>
+                            <select class="form-select" id="movimiento-tipo" required>
+                                <option value="ENTRADA">Entrada</option>
+                                <option value="SALIDA">Salida</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Cantidad</label>
+                            <input type="number" class="form-control" id="movimiento-cantidad" required min="1">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Motivo</label>
+                            <input type="text" class="form-control" id="movimiento-motivo">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="js/api.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

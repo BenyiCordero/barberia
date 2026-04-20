@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -32,6 +33,6 @@ public class Cita {
     @Enumerated(EnumType.STRING)
     private EstadoCita estado;
     @OneToMany(mappedBy = "cita", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CitaDetails> detalles;
+    private List<CitaDetails> detalles = new ArrayList<>();
 
 }

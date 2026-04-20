@@ -1,7 +1,6 @@
 package com.bcsystems.barberia_api.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +18,6 @@ public class VentaDTO {
     private Integer idCita;
     private LocalDateTime fecha;
     private Double total;
-    @JsonManagedReference
     private List<VentaDetalleDTO> detalles;
 
     @JsonIgnore

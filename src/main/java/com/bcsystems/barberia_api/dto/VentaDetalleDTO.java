@@ -1,6 +1,5 @@
 package com.bcsystems.barberia_api.dto;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,9 +18,4 @@ public class VentaDetalleDTO {
     private String nombreServicio;
     private Integer cantidad;
     private Double precio;
-
-    @JsonBackReference
-    public Integer getIdVenta() {
-        return idVenta;
-    }
 }

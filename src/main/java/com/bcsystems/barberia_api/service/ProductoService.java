@@ -1,27 +1,33 @@
 package com.bcsystems.barberia_api.service;
 
+import com.bcsystems.barberia_api.domain.MovimientoInventario;
 import com.bcsystems.barberia_api.domain.Producto;
+import com.bcsystems.barberia_api.domain.en.TipoMovimiento;
 import com.bcsystems.barberia_api.dto.ProductoDTO;
+import com.bcsystems.barberia_api.repository.MovimientoInventarioRepository;
 import com.bcsystems.barberia_api.repository.ProductoRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
 public class ProductoService {
 
     private final ProductoRepository productoRepository;
+    private final MovimientoInventarioRepository movimientoRepository;
 
-    public ProductoService(ProductoRepository productoRepository) {
+    public ProductoService(ProductoRepository productoRepository, MovimientoInventarioRepository movimientoRepository) {
         this.productoRepository = productoRepository;
+        this.movimientoRepository = movimientoRepository;
     }
 
     @Transactional(readOnly = true)
     public Page<ProductoDTO> findAll(Pageable pageable) {
-        return productoRepository.findAll(pageable).map(this::toDTO);
+        return productoRepository.findByStatus(1, pageable).map(this::toDTO);
     }
 
     @Transactional(readOnly = true)
@@ -33,6 +39,17 @@ public class ProductoService {
     public ProductoDTO save(ProductoDTO dto) {
         Producto producto = toEntity(dto);
         Producto saved = productoRepository.save(producto);
+        
+        if (saved.getStock() != null && saved.getStock() > 0) {
+            MovimientoInventario movimiento = new MovimientoInventario();
+            movimiento.setProducto(saved);
+            movimiento.setCantidad(saved.getStock());
+            movimiento.setTipoMovimiento(TipoMovimiento.ENTRADA);
+            movimiento.setFecha(LocalDateTime.now());
+            movimiento.setMotivo("Stock inicial");
+            movimientoRepository.save(movimiento);
+        }
+        
         return toDTO(saved);
     }
 
